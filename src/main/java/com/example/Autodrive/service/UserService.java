@@ -2,12 +2,13 @@ package com.example.Autodrive.service;
 
 import com.example.Autodrive.model.Compte;
 import com.example.Autodrive.model.Role;
+import com.example.Autodrive.model.Token;
 import com.example.Autodrive.model.User;
 import com.example.Autodrive.repository.CompteRepository;
+import com.example.Autodrive.repository.TokenRepository;
 import com.example.Autodrive.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class UserService {
     @Autowired
     private final CompteRepository compteRepository;
     private PasswordEncoder passwordEncoder;
+    private TokenRepository tokenRepository;
+
 
     // Méthode pour enregistrer un nouvel utilisateur
     public void registerUser(User user) {
@@ -53,4 +56,26 @@ public class UserService {
     private String generateCompteId() {
         return "COMPTE-" + System.currentTimeMillis();
     }
+
+    // Créer un token de réinitialisation du mot de passe
+    public void createPasswordResetToken(User user, String token) {
+        Token resetToken = new Token();
+        resetToken.setUser(user);
+        resetToken.setToken(token);
+        tokenRepository.save(resetToken);
+    }
+
+    public Token findPasswordResetToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
 }
