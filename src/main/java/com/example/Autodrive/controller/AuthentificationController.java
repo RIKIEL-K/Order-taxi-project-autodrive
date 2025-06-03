@@ -37,7 +37,7 @@ public class AuthentificationController {
 
     // Demande de réinitialisation du mot de passe
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestParam String email) { //RequestParam pour récupérer le paramètre email de la requête sous forme de chaîne de caractères
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) { //RequestParam pour récupérer le paramètre email de la requête sous forme de chaîne de caractères
         // Vérification si l'utilisateur existe
         User user = userService.findByEmail(email);
         if (user == null) {
@@ -62,7 +62,7 @@ public class AuthentificationController {
 
     // Réinitialisation du mot de passe avec le token
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+    public String resetPassword(@RequestBody String token, @RequestBody String newPassword) {
         Token resetToken = userService.findPasswordResetToken(token);
 
         if (resetToken == null) {
