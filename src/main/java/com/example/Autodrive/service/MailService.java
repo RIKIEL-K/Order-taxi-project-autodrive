@@ -17,6 +17,8 @@ public class MailService {
         // Utilisation de javaMailSender pour envoyer l'email
         // Exemple : javaMailSender.send(message);
 
+
+
         String resetPasswordUrl = "http://localhost:8082/api/auth/reset-password?token=" + token;
 
         SimpleMailMessage message = new SimpleMailMessage();
