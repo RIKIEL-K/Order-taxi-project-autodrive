@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -77,5 +78,31 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+//CAMARA
 
+    /**
+     * Sauvegarder la photo de profil
+     */
+    public String saveProfilePhoto(MultipartFile photo, String userId) {
+        // Logique pour sauvegarder le fichier photo
+        // Retourner le chemin de la photo sauvegardée
+        String uploadDir = "uploads/profile-photos/";
+        String fileName = userId + "_" + photo.getOriginalFilename();
+        // Implémentation de la sauvegarde...
+        return uploadDir + fileName;
+    }
+
+    /**
+     * Trouver un utilisateur par ID
+     */
+    public User findById(String id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Supprimer un utilisateur
+     */
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
 }

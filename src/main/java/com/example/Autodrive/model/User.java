@@ -35,4 +35,14 @@ public class User {
     private String profilePhoto;
     private Role role;
     private Date dateNaissance;
+    //CAMARA
+
+    // Visibilité du compte (pour la fonctionnalité "rendre invisible")
+    private boolean accountVisible = true;
+
+    // Date de création du compte
+    private Date createdAt = new Date();
+
+    // Date de dernière modification
+    private Date updatedAt = new Date();
 }
