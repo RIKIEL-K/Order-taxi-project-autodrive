@@ -14,4 +14,6 @@ public class Compte {
     private String id_compte;
     private String userId;
     private Date dateCreation;
+    private String key;
 }
+
