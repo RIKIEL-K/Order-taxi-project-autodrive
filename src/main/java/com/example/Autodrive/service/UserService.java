@@ -21,7 +21,7 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
     @Autowired
-    private final CompteRepository compteRepository;
+    private final CompteRepository compteRepository; //en blanc le type en rose variable
     private PasswordEncoder passwordEncoder;
     private TokenRepository tokenRepository;
 
