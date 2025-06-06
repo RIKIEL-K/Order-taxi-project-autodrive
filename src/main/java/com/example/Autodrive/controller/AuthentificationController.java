@@ -64,26 +64,42 @@ public class AuthentificationController {
         return ResponseEntity.ok("Password reset email sent.");
     }
 
-    // Réinitialisation du mot de passe avec le token
-    @PostMapping("/reset-password")
-    public String resetPassword(@RequestBody String token, @RequestBody String newPassword) {
+    @PostMapping("/validate-token")
+    public ResponseEntity<String> validateToken(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+
         Token resetToken = userService.findPasswordResetToken(token);
 
         if (resetToken == null) {
-            return "Invalid token.";
+            return ResponseEntity.status(400).body("Token invalide ou expiré.");
+        }
+
+        return ResponseEntity.ok("Token valide.");
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        String newPassword = payload.get("newPassword");
+
+        Token resetToken = userService.findPasswordResetToken(token);
+
+        if (resetToken == null) {
+            return ResponseEntity.status(400).body("Token invalide.");
         }
 
         User user = resetToken.getUser();
 
-        // Hachage du nouveau mot de passe
+        // Hachage du mot de passe
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(newPassword);
 
-        // Mise à jour du mot de passe de l'utilisateur
         user.setPassword(hashedPassword);
         userService.updateUser(user);
 
-        return "Password successfully reset.";
+        return ResponseEntity.ok("Mot de passe mis à jour avec succès.");
     }
-    
+
+
+
 }
