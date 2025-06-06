@@ -11,8 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import java.util.UUID;
 
+@CrossOrigin
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/auth")
@@ -37,7 +40,8 @@ public class AuthentificationController {
 
     // Demande de réinitialisation du mot de passe
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody String email) { //RequestParam pour récupérer le paramètre email de la requête sous forme de chaîne de caractères
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> payload) { //RequestParam pour récupérer le paramètre email de la requête sous forme de chaîne de caractères
+        String email = payload.get("email");
         // Vérification si l'utilisateur existe
         User user = userService.findByEmail(email);
         if (user == null) {
