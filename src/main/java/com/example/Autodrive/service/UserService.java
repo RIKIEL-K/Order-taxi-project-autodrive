@@ -1,9 +1,6 @@
 package com.example.Autodrive.service;
 
-import com.example.Autodrive.model.Compte;
-import com.example.Autodrive.model.Role;
-import com.example.Autodrive.model.Token;
-import com.example.Autodrive.model.User;
+import com.example.Autodrive.model.*;
 import com.example.Autodrive.repository.CompteRepository;
 import com.example.Autodrive.repository.TokenRepository;
 import com.example.Autodrive.repository.UserRepository;
@@ -76,6 +73,19 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    public String loginUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) throw new IllegalArgumentException("Aucun utilisateur trouvé avec cet email.");
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Mot de passe incorrect.");
+        }
+        return jwtUtil.generateToken(user);
+    }
+
 
 
 }

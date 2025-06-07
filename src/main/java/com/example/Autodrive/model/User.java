@@ -14,7 +14,6 @@ import java.util.Date;
 
 @Data
 @Document(collection = "users")
-
 public class User {
     @Id
     private String id;
@@ -36,3 +35,6 @@ public class User {
     private Role role;
     private Date dateNaissance;
 }
+
+
+

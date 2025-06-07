@@ -12,3 +12,4 @@ public class Token {
     private String token;
     private User user;
 }
+

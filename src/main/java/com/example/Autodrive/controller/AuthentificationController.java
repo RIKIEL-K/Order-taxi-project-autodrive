@@ -1,5 +1,6 @@
 package com.example.Autodrive.controller;
 
+import com.example.Autodrive.model.LoginRequest;
 import com.example.Autodrive.model.Token;
 import com.example.Autodrive.model.User;
 import com.example.Autodrive.repository.TokenRepository;
@@ -7,6 +8,7 @@ import com.example.Autodrive.service.MailService;
 import com.example.Autodrive.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -80,6 +82,20 @@ public class AuthentificationController {
         userService.updateUser(user);
 
         return "Password successfully reset.";
+    }
+
+    //connexion avec email et mot de passe
+    // sa retourne le token de l'utilisateur et nous permet de le stocker dans une session avec ceci
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+        try {
+            String token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok("Connexion réussie son Token : " + token);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur : " + e.getMessage());
+        }
     }
     
 }
