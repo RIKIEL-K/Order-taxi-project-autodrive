@@ -11,7 +11,7 @@ public class LoginRequest {
 
     // Getters et setters
     public String getEmail() {
-        return email;
+        return email0;
     }
 
     public void setEmail(String email) {

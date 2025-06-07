@@ -81,7 +81,7 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         if (user == null) throw new IllegalArgumentException("Aucun utilisateur trouvé avec cet email.");
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Mot de passe incorrect.");
+            throw new IllegalArgumentException("Mot de passe incorrect0.");
         }
         return jwtUtil.generateToken(user);
     }

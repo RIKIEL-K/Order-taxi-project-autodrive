@@ -15,7 +15,7 @@ import java.util.Date;
 public class JwtUtil {
 
     // Clé secrète d'au moins 32 caractères pour HS256
-    private static final String SECRET_KEY = "MaCleJWTultraSecreteDe32Caracteres!";
+    private static final String SECRET_KEY = "MaCleJWTultraSecreteDe32Caracteres!0";
 
     //Cette ligne génère une clé cryptographique sécurisée à partir de ta chaîne secrète (SECRET_KEY), qui est utilisée pour signer les tokens JWT.
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
