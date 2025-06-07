@@ -90,7 +90,7 @@ public class AuthentificationController {
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
             String token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
-            return ResponseEntity.ok("Connexion réussie avec0 son  Token : " + token);
+            return ResponseEntity.ok("Connexion réussie avec son  Token : " + token);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : " + e.getMessage());
         } catch (Exception e) {
