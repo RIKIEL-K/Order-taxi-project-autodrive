@@ -31,8 +31,8 @@ public class AuthentificationController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) { //@RequestBody pour lier l'objet JSON envoyé dans la requête au paramètre user
         try {
-            userService.registerUser(user); // Appel de la méthode registerUser du service pour enregistrer l'utilisateur
-            return ResponseEntity.ok("Utilisateur enregistré avec succès");
+            User savedUser = userService.registerUser(user); // Appel de la méthode registerUser du service pour enregistrer l'utilisateur
+            return ResponseEntity.ok(savedUser.getId());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erreur lors de l'enregistrement de l'utilisateur : " + e.getMessage());
         }
@@ -97,8 +97,11 @@ public class AuthentificationController {
         user.setPassword(hashedPassword);
         userService.updateUser(user);
 
+
         return ResponseEntity.ok("Mot de passe mis à jour avec succès.");
     }
+
+
 
 
 
