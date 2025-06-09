@@ -1,5 +1,6 @@
 package com.example.Autodrive.service;
 
+import com.example.Autodrive.composants.JwtUtil;
 import com.example.Autodrive.model.Compte;
 import com.example.Autodrive.model.Role;
 import com.example.Autodrive.model.Token;
@@ -25,6 +26,8 @@ public class UserService {
     private final CompteRepository compteRepository; //en blanc le type en rose variable
     private PasswordEncoder passwordEncoder;
     private TokenRepository tokenRepository;
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     // Méthode pour enregistrer un nouvel utilisateur
@@ -105,5 +108,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    // Connexion avec email et mot de passe
+    public String loginUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) throw new IllegalArgumentException("Aucun utilisateur trouvé avec cet email.");
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Mot de passe incorrect.");
+        }
+        return jwtUtil.generateToken(user);
+    }
 
 }
