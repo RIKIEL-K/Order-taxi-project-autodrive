@@ -1,5 +1,6 @@
 package com.example.Autodrive.controller;
 
+import com.example.Autodrive.DTO.LoginRequest;
 import com.example.Autodrive.model.Token;
 import com.example.Autodrive.model.User;
 import com.example.Autodrive.repository.TokenRepository;
@@ -7,11 +8,13 @@ import com.example.Autodrive.service.MailService;
 import com.example.Autodrive.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -101,7 +104,26 @@ public class AuthentificationController {
         return ResponseEntity.ok("Mot de passe mis à jour avec succès.");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody LoginRequest loginRequest) {
+        try {
+            String token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+            User user = userService.findByEmail(loginRequest.getEmail());
 
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("userId", user.getId());
+            response.put("firstname", user.getFirstname());
+            response.put("role", user.getRole().toString());
+
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Échec de la connexion : " + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Erreur serveur : " + e.getMessage()));
+        }
+    }
 
 
 
