@@ -48,6 +48,7 @@ public class AuthentificationController {
         // Vérification si l'utilisateur existe
         User user = userService.findByEmail(email);
         if (user == null) {
+
             return ResponseEntity.status(400).body("Email not found");
         }
 
