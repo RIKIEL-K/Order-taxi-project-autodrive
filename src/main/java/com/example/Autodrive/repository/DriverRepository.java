@@ -15,6 +15,6 @@ public interface DriverRepository extends MongoRepository<Driver, String> {
     boolean existsByEmail(String email);
 
     // Rechercher les chauffeurs en ligne à proximité d'un point donné
-    @Query("{ 'enLigne': true, 'position': { $nearSphere: { $geometry: ?0, $maxDistance: ?1 } } }") //
+    @Query("{ 'enLigne': true, 'location': { $nearSphere: { $geometry: ?0, $maxDistance: ?1 } } }") //
     List<Driver> findNearbyDrivers(Point point, double maxDistanceInMeters);
 }
