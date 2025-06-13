@@ -1,5 +1,6 @@
 package com.example.Autodrive.model;
 
+import com.mongodb.client.model.geojson.Point;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -43,5 +44,7 @@ public class Driver {
 
     // Date de dernière modification
     private Date updatedAt = new Date();
+
+    private Point position;
 }
 
