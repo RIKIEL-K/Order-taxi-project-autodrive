@@ -1,10 +1,13 @@
 package com.example.Autodrive.controller;
 
 import com.example.Autodrive.DTO.LoginRequest;
+import com.example.Autodrive.Requests.DriverStatusUpdateRequest;
 import com.example.Autodrive.model.Driver;
+import com.example.Autodrive.repository.DriverRepository;
 import com.example.Autodrive.service.DriverService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ public class DriverController {
 
     @Autowired
     private DriverService conducteurService;
+    private final DriverRepository driverRepository;
 
     @PostMapping("/register")
     public ResponseEntity<Driver> register(@RequestBody Driver conducteur) {
@@ -53,5 +57,22 @@ public class DriverController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Erreur serveur : " + e.getMessage()));
         }
+    }
+
+
+    @PutMapping("/en-ligne/{id}")
+    public ResponseEntity<?> updateEnLigne(@PathVariable String id,
+                                           @RequestBody DriverStatusUpdateRequest request) {
+        Driver driver = driverRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Conducteur introuvable"));
+
+        driver.setEnLigne(request.isEnLigne());
+
+        if (request.isEnLigne() && request.getLatitude() != null && request.getLongitude() != null) {
+            driver.setLocation(new GeoJsonPoint(request.getLongitude(), request.getLatitude()));
+        }
+
+        driverRepository.save(driver);
+        return ResponseEntity.ok("Statut enLigne mis à jour");
     }
 }

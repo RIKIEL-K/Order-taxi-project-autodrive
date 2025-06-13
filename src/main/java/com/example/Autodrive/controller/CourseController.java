@@ -2,7 +2,10 @@ package com.example.Autodrive.controller;
 
 
 import com.example.Autodrive.Requests.CourseRequestDTO;
+import com.example.Autodrive.Requests.DriverStatusUpdateRequest;
 import com.example.Autodrive.model.Course;
+import com.example.Autodrive.model.Driver;
+import com.example.Autodrive.repository.DriverRepository;
 import com.example.Autodrive.service.CourseService;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
@@ -23,6 +26,7 @@ import java.util.Map;
 public class CourseController {
 
     private final CourseService courseService;
+    private final DriverRepository driverRepository;
 
     @PostMapping("/request")
     public ResponseEntity<?> requestCourse(@RequestBody CourseRequestDTO dto) {
@@ -38,6 +42,8 @@ public class CourseController {
         }
         return ResponseEntity.ok(course);
     }
+
+
 
     @GetMapping("/for-driver/{driverId}")
     public ResponseEntity<List<Course>> getCoursesForDriver(
@@ -58,4 +64,6 @@ public class CourseController {
     public ResponseEntity<Course> getStatus(@PathVariable String userId) {
         return ResponseEntity.ok(courseService.getLatestCourseStatus(userId));
     }
+
+
 }
