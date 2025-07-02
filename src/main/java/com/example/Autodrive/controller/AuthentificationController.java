@@ -33,6 +33,7 @@ public class AuthentificationController {
     // Endpoint pour enregistrer un nouvel utilisateur
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) { //@RequestBody pour lier l'objet JSON envoyé dans la requête au paramètre user
+        System.out.println("Tentative d'enregistrement de l'utilisateur : " + user.getEmail());
         try {
             User savedUser = userService.registerUser(user); // Appel de la méthode registerUser du service pour enregistrer l'utilisateur
             return ResponseEntity.ok(savedUser.getId());
@@ -107,6 +108,7 @@ public class AuthentificationController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody LoginRequest loginRequest) {
+        System.out.println("Tentative de connexion : " + loginRequest.getEmail());
         try {
             String token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
             User user = userService.findByEmail(loginRequest.getEmail());

@@ -46,7 +46,7 @@ public class CourseService {
             return null;
         }
         if (prix > 0 && prix <= 5) {
-            prix = 5; // Prix minimum pour une course
+            prix = 5;
         }
 
         Course course = new Course();
@@ -84,11 +84,13 @@ public class CourseService {
     }
 
     public List<Course> getCoursesForDriver(String driverId, double latitude, double longitude) {
+        System.out.println("Récupération des courses pour le conducteur avec ID: " + driverId);
         double maxDistanceInMeters = 1000;
         return courseRepo.findPendingCoursesNear(longitude, latitude, maxDistanceInMeters);
     }
 
     public Course acceptCourse(String courseId, String driverId) {
+        System.out.println("Accepting course with ID: " + courseId + " for driver: " + driverId);
         Course course = courseRepo.findById(courseId).orElseThrow();
         course.setDriverId(driverId);
         course.setStatus(CourseStatus.ACCEPTEE);
