@@ -65,5 +65,12 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getLatestCourseStatus(userId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getByIdWithVoiture(@PathVariable String id) {
+        Course course = courseService.getByIdWithVoiture(id);
+        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
+    }
+
+
 
 }

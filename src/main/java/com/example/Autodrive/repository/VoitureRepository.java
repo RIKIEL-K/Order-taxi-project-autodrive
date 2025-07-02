@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface VoitureRepository extends MongoRepository<Voiture, String> {
     Optional<Voiture> findByDriverId(String driverId);
     boolean existsByDriverId(String driverId);
+
 }
 

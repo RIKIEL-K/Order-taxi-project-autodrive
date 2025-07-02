@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface VehiculeRepository extends MongoRepository<Vehicule, String> {
     List<Vehicule> findByConducteurId(String conducteurId);
+
 }

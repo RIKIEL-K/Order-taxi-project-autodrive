@@ -7,6 +7,7 @@ import com.example.Autodrive.model.Driver;
 import com.example.Autodrive.repository.CourseRepository;
 import com.example.Autodrive.repository.DriverRepository;
 
+import com.example.Autodrive.repository.VoitureRepository;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class CourseService {
 
     private final CourseRepository courseRepo;
     private final DriverRepository driverRepo;
+    private final VoitureRepository voitureRepository;
 
     private static final double RAYON_METRES = 1000;
     private static final double PRIX_PAR_KM = 5.0;
@@ -98,6 +100,17 @@ public class CourseService {
     }
     public Course getLatestCourseStatus(String userId) {
         return courseRepo.findTopByUserIdOrderByDateDesc(userId).orElse(null);
+    }
+
+    public Course getByIdWithVoiture(String id) {
+        Course course = courseRepo.findById(id).orElse(null);
+        if (course != null && course.getDriverId() != null) {
+            voitureRepository.findByDriverId(course.getDriverId()).ifPresent(voiture -> {
+                course.setVehicule(voiture.getMarque() + " " + voiture.getModele() + " " + voiture.getAnnee());
+                course.setPlaque(voiture.getNumeroDePlaque());
+            });
+        }
+        return course;
     }
 }
 
