@@ -1,5 +1,6 @@
 package com.example.Autodrive.model;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,12 @@ public class Course {
     private CourseStatus status;
 
 
+    // ces champs seront presents uniquement dans les réponses, pas dans la base de données
+    @Transient
+    private String vehicule;
+
+    @Transient
+    private String plaque;
 }
 
 
